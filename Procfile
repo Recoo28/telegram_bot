@@ -1,0 +1,1 @@
+web: python 2şey.py
