@@ -1,4 +1,3 @@
+asyncio
 telethon
 python-telegram-bot
-Flask
-psycopg2-binary
