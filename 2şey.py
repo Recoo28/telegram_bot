@@ -10,15 +10,16 @@ from telethon.tl.types import ChannelParticipantsSearch
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, CallbackQueryHandler, filters, ContextTypes
 from telegram.error import NetworkError, Forbidden
+from your_bot_logic import setup_handlers, main
 
 # Logging ayarları
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
 # Bot bilgileri
-API_ID = '24340773'
-API_HASH = '0acab47a7a3743a0f0693f0ca2332d82'
-BOT_TOKEN = '6372207106:AAEENqn4AG06qAHN4-IdPZz-2ojjqWTKVtM'
+API_ID = os.environ.get('API_ID')
+API_HASH = os.environ.get('API_HASH')
+BOT_TOKEN = os.environ.get('BOT_TOKEN')
 
 # Grup ve kullanıcı bilgileri
 TARGET_GROUP_ID = -1001647237066
@@ -41,12 +42,8 @@ last_congratulated = {}
 last_congratulated_15 = {}
 bulk_media_tracker = {}
 
-# Telethon client'ı
-telethon_client = TelegramClient('bot_session', API_ID, API_HASH,
-                                 connection_retries=None,
-                                 auto_reconnect=True,
-                                 retry_delay=1,
-                                 flood_sleep_threshold=60)
+# Telethon client
+telethon_client = TelegramClient('bot_session', API_ID, API_HASH)
 
 # python-telegram-bot uygulaması
 application = ApplicationBuilder().token(BOT_TOKEN).build()
@@ -314,10 +311,11 @@ async def main():
         await telethon_client.disconnect()
         await application.stop()
         conn.close()
-
 if __name__ == "__main__":
     try:
-        asyncio.run(main())
+        loop = asyncio.get_event_loop()
+        setup_handlers(application, telethon_client)
+        loop.run_until_complete(main(telethon_client, application))
     except KeyboardInterrupt:
         print("Bot kapatılıyor...")
     except Exception as e:
