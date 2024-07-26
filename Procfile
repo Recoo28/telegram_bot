@@ -1,1 +1,1 @@
-web: python 2şey.py
+web: python bot.py
