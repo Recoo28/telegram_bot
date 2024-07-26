@@ -11,6 +11,8 @@ from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, CallbackQueryHandler, filters, ContextTypes
 from telegram.error import NetworkError, Forbidden
 from your_bot_logic import setup_handlers, main
+from telethon import TelegramClient
+from telegram.ext import ApplicationBuilder
 
 # Logging ayarları
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
